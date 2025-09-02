@@ -52,25 +52,19 @@ export default function Index() {
             </div>
           </div>
         ) : (
-          <div className="flex flex-col items-center gap-4">
-            <div className="flex w-full max-w-3xl items-center justify-between gap-4 rounded-xl border border-white/10 bg-white/50 p-2 text-xs backdrop-blur supports-[backdrop-filter]:bg-white/40">
-              <div className="flex items-center gap-3">
-                <div className="text-muted-foreground">Use arrow keys • Press R to restart • Press Esc to exit</div>
-                <div className="flex items-center gap-2" aria-label="Lives">
+          <div className="relative flex flex-col items-center gap-4">
+            <div className="pointer-events-none absolute left-1/2 top-2 z-10 w-full max-w-3xl -translate-x-1/2 px-2">
+              <div className="flex items-center justify-between">
+                <div className="pointer-events-auto flex items-center gap-2" aria-label="Lives">
                   {Array.from({ length: 3 }).map((_, i) => (
                     <Heart
                       key={i}
-                      className={i < livesLeft ? "h-4 w-4 text-rose-500 fill-rose-500" : "h-4 w-4 text-muted-foreground/30"}
+                      className={i < livesLeft ? "h-5 w-5 text-rose-500 fill-rose-500" : "h-5 w-5 text-muted-foreground/30"}
                     />
                   ))}
                 </div>
+                <Button className="pointer-events-auto" variant="secondary" onClick={() => setStarted(false)}>Exit</Button>
               </div>
-              <div className="flex items-center gap-3 text-muted-foreground">
-                <span>Score {state.score}</span>
-                <span>• Level {state.level}</span>
-                <span>• {state.progress}%</span>
-              </div>
-              <Button variant="secondary" onClick={() => setStarted(false)}>Exit</Button>
             </div>
             <GameCanvas onUpdate={onUpdate} />
           </div>
