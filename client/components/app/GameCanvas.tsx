@@ -130,7 +130,8 @@ export default function GameCanvas({ onUpdate, className }: GameCanvasProps) {
 
           // Player (Pac-Man)
           p.fill(255, 230, 80);
-          const mouthAngle = Math.sin(p.frameCount * 0.1) * 24 + 18;
+          // Keep mouth always open: oscillate between 30° and 42°
+          const mouthAngle = 36 + Math.sin(p.frameCount * 0.12) * 6;
           p.arc(
             player.x + player.w / 2,
             player.y + player.h / 2,
