@@ -179,9 +179,7 @@ export default function GameCanvas({ onUpdate, className }: GameCanvasProps) {
             }
           }
         } else {
-          // overlay
-          p.fill(0, 0, 0, 140);
-          p.rect(0, 0, p.width, p.height);
+          // game over text only (no dark overlay)
           p.fill(255);
           p.textSize(28);
           p.textAlign(p.CENTER);
