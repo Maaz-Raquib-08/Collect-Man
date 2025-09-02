@@ -63,7 +63,9 @@ export default function Index() {
                     />
                   ))}
                 </div>
-                <Button className="pointer-events-auto" variant="secondary" onClick={() => setStarted(false)}>Exit</Button>
+                <Button size="sm" variant="ghost" className="pointer-events-auto h-8 rounded-full bg-white/80 px-3 text-xs shadow-sm ring-1 ring-black/5 backdrop-blur hover:bg-white" onClick={() => setStarted(false)}>
+                  <X className="mr-1 h-3.5 w-3.5" /> Exit
+                </Button>
               </div>
             </div>
             <GameCanvas onUpdate={onUpdate} />
