@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import GameCanvas, { type GameState } from "@/components/app/GameCanvas";
 import { Button } from "@/components/ui/button";
-import { Heart, X } from "lucide-react";
+import { Heart } from "lucide-react";
 
 export default function Index() {
   const [started, setStarted] = useState(false);
@@ -64,7 +64,7 @@ export default function Index() {
                   ))}
                 </div>
                 <Button size="sm" variant="ghost" className="pointer-events-auto h-8 rounded-full bg-white/80 px-3 text-xs shadow-sm ring-1 ring-black/5 backdrop-blur hover:bg-white" onClick={() => setStarted(false)}>
-                  <X className="mr-1 h-3.5 w-3.5" /> Exit
+                  Exit
                 </Button>
               </div>
             </div>
