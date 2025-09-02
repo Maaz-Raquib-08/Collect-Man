@@ -32,6 +32,7 @@ export default function GameCanvas({ onUpdate, className }: GameCanvasProps) {
       let progress = 0;
       let missedResources = 0;
       let gameOver = false;
+      let heading = 0;
 
       const emit = () => {
         onUpdate?.({ score, level, progress, missed: missedResources, gameOver });
@@ -128,19 +129,26 @@ export default function GameCanvas({ onUpdate, className }: GameCanvasProps) {
           player.x = p.constrain(player.x, 0, p.width - player.w);
           player.y = p.constrain(player.y, 0, p.height - player.h);
 
-          // Player (Pac-Man)
+          // Facing direction from velocity
+          const speed = Math.hypot(player.vx, player.vy);
+          if (speed > 10) heading = Math.atan2(player.vy, player.vx);
+
+          // Pac-Man body with opening/closing mouth and eye
+          const cx = player.x + player.w / 2;
+          const cy = player.y + player.h / 2;
+          const mouthDeg = 30 + Math.sin(p.frameCount * 0.18) * 15; // 15°–45°
+          const mouthRad = (mouthDeg * Math.PI) / 180;
+
+          p.push();
+          p.translate(cx, cy);
+          p.rotate(heading);
+          p.noStroke();
           p.fill(255, 230, 80);
-          // Original: oscillate between 15° and 45° at speed 0.1
-          const mouthAngle = Math.sin(p.frameCount * 0.1) * 30 + 15;
-          p.arc(
-            player.x + player.w / 2,
-            player.y + player.h / 2,
-            player.w,
-            player.h,
-            p.radians(mouthAngle),
-            p.radians(360 - mouthAngle),
-            p.PIE,
-          );
+          p.arc(0, 0, player.w, player.h, mouthRad, 2 * Math.PI - mouthRad, p.PIE);
+          // Eye
+          p.fill(10, 10, 35);
+          p.circle(player.w * 0.12, -player.h * 0.18, Math.max(3, player.w * 0.08));
+          p.pop();
 
           // Debris
           for (let i = debris.length - 1; i >= 0; i--) {
