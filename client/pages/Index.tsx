@@ -16,9 +16,9 @@ export default function Index() {
   const onUpdate = useCallback((s: GameState) => setState(s), []);
 
   useEffect(() => {
-    if (!started) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setStarted(false);
+      if (!started && (e.key === "Enter" || e.key === " ")) setStarted(true);
+      if (started && e.key === "Escape") setStarted(false);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
