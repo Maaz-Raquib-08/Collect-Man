@@ -23,9 +23,10 @@ export default function GameCanvas({ onUpdate, className }: GameCanvasProps) {
     let intervals: number[] = [];
 
     const sketch = (p: p5) => {
-      let player: { x: number; y: number; w: number; h: number };
+      let player: { x: number; y: number; w: number; h: number; vx: number; vy: number };
       let debris: Array<{ x: number; y: number; w: number; h: number }> = [];
       let resources: Array<{ x: number; y: number; w: number; h?: number }> = [];
+      let stars: Array<{ x: number; y: number; s: number; layer: number }> = [];
       let score = 0;
       let level = 1;
       let progress = 0;
@@ -44,6 +45,10 @@ export default function GameCanvas({ onUpdate, className }: GameCanvasProps) {
         progress = 0;
         missedResources = 0;
         gameOver = false;
+        player.x = 100;
+        player.y = p.height / 2 - 20;
+        player.vx = 0;
+        player.vy = 0;
         emit();
       };
 
@@ -54,13 +59,14 @@ export default function GameCanvas({ onUpdate, className }: GameCanvasProps) {
 
       const spawnDebris = () => {
         if (!gameOver) {
-          debris.push({ x: p.width, y: p.random(0, p.height - 30), w: 30, h: 30 });
+          const size = p.random(24, 36);
+          debris.push({ x: p.width, y: p.random(0, p.height - size), w: size, h: size });
         }
       };
 
       const spawnResource = () => {
         if (!gameOver) {
-          resources.push({ x: p.width, y: p.random(0, p.height - 20), w: 20 });
+          resources.push({ x: p.width, y: p.random(10, p.height - 10), w: 18 });
         }
       };
 
@@ -71,22 +77,60 @@ export default function GameCanvas({ onUpdate, className }: GameCanvasProps) {
 
       p.setup = () => {
         const c = p.createCanvas(800, 400);
-        c.addClass("rounded-xl border border-white/80");
+        c.addClass("rounded-2xl border border-white/20 shadow-[0_20px_60px_-20px_rgba(115,90,255,0.45)]");
         c.parent(containerRef.current!);
 
-        player = { x: 100, y: p.height / 2 - 20, w: 40, h: 40 };
+        player = { x: 100, y: p.height / 2 - 20, w: 40, h: 40, vx: 0, vy: 0 };
 
-        intervals.push(window.setInterval(spawnDebris, 1500));
-        intervals.push(window.setInterval(spawnResource, 2000));
+        // starfield
+        for (let i = 0; i < 120; i++) {
+          stars.push({ x: p.random(0, p.width), y: p.random(0, p.height), s: p.random(1, 2.2), layer: Math.random() < 0.5 ? 1 : 2 });
+        }
+
+        intervals.push(window.setInterval(spawnDebris, 1400));
+        intervals.push(window.setInterval(spawnResource, 1800));
         emit();
       };
 
       p.draw = () => {
-        p.background(10, 10, 35);
+        const dt = p.deltaTime / 1000; // seconds
+        p.background(7, 7, 22);
+
+        // starfield parallax
+        p.noStroke();
+        for (const st of stars) {
+          const sp = st.layer === 1 ? 40 : 70; // px/s
+          st.x -= sp * dt;
+          if (st.x < -2) st.x = p.width + 2;
+          p.fill(255, 255, 255, st.layer === 1 ? 120 : 200);
+          p.circle(st.x, st.y, st.s);
+        }
+
         if (!gameOver) {
-          // Pac-Man like player
-          p.fill(255, 255, 0);
-          const mouthAngle = Math.sin(p.frameCount * 0.1) * 30 + 15;
+          // Player physics (smooth)
+          const accel = 900; // px/s^2
+          const maxSpeed = 380; // px/s
+          const friction = 6; // damping
+          if (p.keyIsDown(p.LEFT_ARROW)) player.vx -= accel * dt;
+          if (p.keyIsDown(p.RIGHT_ARROW)) player.vx += accel * dt;
+          if (p.keyIsDown(p.UP_ARROW)) player.vy -= accel * dt;
+          if (p.keyIsDown(p.DOWN_ARROW)) player.vy += accel * dt;
+
+          // apply friction
+          player.vx -= player.vx * friction * dt;
+          player.vy -= player.vy * friction * dt;
+          // clamp speed
+          player.vx = p.constrain(player.vx, -maxSpeed, maxSpeed);
+          player.vy = p.constrain(player.vy, -maxSpeed, maxSpeed);
+
+          player.x += player.vx * dt;
+          player.y += player.vy * dt;
+          player.x = p.constrain(player.x, 0, p.width - player.w);
+          player.y = p.constrain(player.y, 0, p.height - player.h);
+
+          // Player (Pac-Man)
+          p.fill(255, 230, 80);
+          const mouthAngle = Math.sin(p.frameCount * 0.1) * 24 + 18;
           p.arc(
             player.x + player.w / 2,
             player.y + player.h / 2,
@@ -97,32 +141,28 @@ export default function GameCanvas({ onUpdate, className }: GameCanvasProps) {
             p.PIE,
           );
 
-          // Movement
-          if (p.keyIsDown(p.LEFT_ARROW)) player.x -= 5;
-          if (p.keyIsDown(p.RIGHT_ARROW)) player.x += 5;
-          if (p.keyIsDown(p.UP_ARROW)) player.y -= 5;
-          if (p.keyIsDown(p.DOWN_ARROW)) player.y += 5;
-          player.x = p.constrain(player.x, 0, p.width - player.w);
-          player.y = p.constrain(player.y, 0, p.height - player.h);
-
           // Debris
           for (let i = debris.length - 1; i >= 0; i--) {
             const d = debris[i];
-            d.x -= 5 + level; // increases with level
-            p.fill(255, 0, 0);
-            p.rect(d.x, d.y, d.w, d.h);
+            const speed = (160 + level * 50) * dt;
+            d.x -= speed;
+            p.fill(255, 80, 80);
+            p.rect(d.x, d.y, d.w, d.h, 6);
             if (collides(player, d)) {
               gameOver = true;
             }
             if (d.x < -d.w) debris.splice(i, 1);
           }
 
-          // Resources
+          // Resources (glow)
           for (let i = resources.length - 1; i >= 0; i--) {
             const r = resources[i];
-            r.x -= 5;
-            p.fill(0, 255, 0);
-            p.ellipse(r.x, r.y, r.w);
+            r.x -= 170 * dt;
+            p.fill(0, 255, 140, 90);
+            p.noStroke();
+            p.circle(r.x, r.y, r.w + 10);
+            p.fill(0, 255, 120);
+            p.circle(r.x, r.y, r.w);
             if (collides(player, r)) {
               score += 10;
               updateProgress(progress + 10);
@@ -139,8 +179,11 @@ export default function GameCanvas({ onUpdate, className }: GameCanvasProps) {
             }
           }
         } else {
-          p.fill(255, 0, 0);
-          p.textSize(32);
+          // overlay
+          p.fill(0, 0, 0, 140);
+          p.rect(0, 0, p.width, p.height);
+          p.fill(255);
+          p.textSize(28);
           p.textAlign(p.CENTER);
           p.text("Game Over! Press R to Restart", p.width / 2, p.height / 2);
         }
@@ -158,8 +201,9 @@ export default function GameCanvas({ onUpdate, className }: GameCanvasProps) {
 
     return () => {
       sketchRef.current?.remove();
+      intervals.forEach(clearInterval);
     };
   }, [onUpdate]);
 
-  return <div ref={containerRef} className={cn("mx-auto w-full max-w-3xl", className)} />;
+  return <div ref={containerRef} className={cn("mx-auto w-full max-w-3xl rounded-3xl border border-white/10 bg-[#0a0a23] p-4 shadow-brand", className)} />;
 }
