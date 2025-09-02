@@ -205,5 +205,5 @@ export default function GameCanvas({ onUpdate, className }: GameCanvasProps) {
     };
   }, [onUpdate]);
 
-  return <div ref={containerRef} className={cn("mx-auto w-full max-w-3xl rounded-3xl border border-white/10 bg-[#0a0a23] p-4 shadow-brand", className)} />;
+  return <div ref={containerRef} className={cn("mx-auto w-full max-w-3xl", className)} />;
 }
