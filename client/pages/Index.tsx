@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import GameCanvas, { type GameState } from "@/components/app/GameCanvas";
 import { Button } from "@/components/ui/button";
 
@@ -13,6 +13,15 @@ export default function Index() {
   });
 
   const onUpdate = useCallback((s: GameState) => setState(s), []);
+
+  useEffect(() => {
+    if (!started) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setStarted(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [started]);
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-white to-accent/40">
@@ -37,8 +46,11 @@ export default function Index() {
           </div>
         ) : (
           <div className="flex flex-col items-center gap-4">
+            <div className="flex w-full max-w-3xl items-center justify-between">
+              <div className="text-xs text-muted-foreground">Use arrow keys • Press R to restart • Press Esc to exit</div>
+              <Button variant="secondary" onClick={() => setStarted(false)}>Exit</Button>
+            </div>
             <GameCanvas onUpdate={onUpdate} />
-            <div className="text-xs text-muted-foreground">Use arrow keys • Press R to restart</div>
           </div>
         )}
       </main>
