@@ -1,62 +1,63 @@
-import { DemoResponse } from "@shared/api";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
+import { StatCard } from "@/components/app/StatCard";
+import { ProgressStat } from "@/components/app/ProgressStat";
+import { Trophy, Layers, AlertCircle } from "lucide-react";
 
 export default function Index() {
-  const [exampleFromServer, setExampleFromServer] = useState("");
-  // Fetch users on component mount
-  useEffect(() => {
-    fetchDemo();
-  }, []);
+  const score = 0;
+  const level = 1;
+  const progress = 0; // percent
+  const missed = { current: 0, total: 3 };
 
-  // Example of how to fetch data from the server (if needed)
-  const fetchDemo = async () => {
-    try {
-      const response = await fetch("/api/demo");
-      const data = (await response.json()) as DemoResponse;
-      setExampleFromServer(data.message);
-    } catch (error) {
-      console.error("Error fetching hello:", error);
-    }
-  };
+  const missedText = useMemo(
+    () => `${missed.current}/${missed.total}`,
+    [missed.current, missed.total],
+  );
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
-      <div className="text-center">
-        {/* TODO: FUSION_GENERATION_APP_PLACEHOLDER replace everything here with the actual app! */}
-        <h1 className="text-2xl font-semibold text-slate-800 flex items-center justify-center gap-3">
-          <svg
-            className="animate-spin h-8 w-8 text-slate-400"
-            viewBox="0 0 50 50"
-          >
-            <circle
-              className="opacity-30"
-              cx="25"
-              cy="25"
-              r="20"
-              stroke="currentColor"
-              strokeWidth="5"
-              fill="none"
-            />
-            <circle
-              className="text-slate-600"
-              cx="25"
-              cy="25"
-              r="20"
-              stroke="currentColor"
-              strokeWidth="5"
-              fill="none"
-              strokeDasharray="100"
-              strokeDashoffset="75"
-            />
-          </svg>
-          Generating your app...
-        </h1>
-        <p className="mt-4 text-slate-600 max-w-md">
-          Watch the chat on the left for updates that might need your attention
-          to finish generating
-        </p>
-        <p className="mt-4 hidden max-w-md">{exampleFromServer}</p>
+    <div className="relative min-h-screen bg-gradient-to-br from-white to-accent/40">
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -left-1/3 -top-1/3 h-[600px] w-[600px] rounded-full bg-[radial-gradient(closest-side,theme(colors.primary.DEFAULT)/0.12,transparent)]" />
+        <div className="absolute -bottom-1/3 -right-1/3 h-[700px] w-[700px] rounded-full bg-[radial-gradient(closest-side,theme(colors.accent.DEFAULT)/0.25,transparent)]" />
       </div>
+
+      <main className="relative mx-auto grid w-full max-w-5xl gap-6 px-6 py-14 sm:gap-8 sm:py-20">
+        <header className="flex flex-col items-start gap-3 sm:gap-4">
+          <span className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+            Reflex Quest
+          </span>
+          <h1 className="text-balance text-4xl font-extrabold tracking-tight sm:text-5xl">
+            Live Game Status
+          </h1>
+          <p className="text-pretty max-w-prose text-muted-foreground">
+            Real-time overview of your session. Designed to be clean, bold and modern.
+          </p>
+        </header>
+
+        <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <StatCard
+            label="Score"
+            value={<span className="tabular-nums">{score}</span>}
+            hint="Keep the streak going"
+            tone="primary"
+            icon={<Trophy className="h-6 w-6" />}
+          />
+          <StatCard
+            label="Level"
+            value={<span className="tabular-nums">{level}</span>}
+            hint="Difficulty scales gradually"
+            icon={<Layers className="h-6 w-6" />}
+          />
+          <ProgressStat label="Progress" value={progress} />
+          <StatCard
+            label="Missed"
+            value={<span className="tabular-nums">{missedText}</span>}
+            hint="Three misses end the run"
+            tone="danger"
+            icon={<AlertCircle className="h-6 w-6" />}
+          />
+        </section>
+      </main>
     </div>
   );
 }
