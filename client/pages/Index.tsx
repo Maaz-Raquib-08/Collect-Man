@@ -35,13 +35,28 @@ export default function Index() {
 
       <main className="relative mx-auto w-full max-w-5xl px-6 py-20">
         {!started ? (
-          <div className="mx-auto max-w-xl rounded-2xl border border-primary/20 bg-white/60 p-8 shadow-brand backdrop-blur supports-[backdrop-filter]:bg-white/50">
+          <div className="mx-auto max-w-2xl overflow-hidden rounded-3xl border border-primary/20 bg-white/70 p-8 shadow-brand backdrop-blur supports-[backdrop-filter]:bg-white/60">
             <div className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
               Space Cleanup: Cosmic Recycler
             </div>
-            <h1 className="mt-3 text-3xl font-extrabold tracking-tight">Start Game</h1>
-            <p className="mt-2 text-sm text-muted-foreground">Arrow keys to move. Collect green resources, avoid red debris. Miss 3 resources and it’s game over. Press R to restart.</p>
-            <div className="mt-6">
+            <h1 className="mt-4 text-4xl font-extrabold tracking-tight">
+              <span className="bg-gradient-to-r from-primary to-fuchsia-500 bg-clip-text text-transparent">Start Game</span>
+            </h1>
+            <p className="mt-3 text-sm text-muted-foreground">Collect green resources, avoid red debris. Miss 3 resources and it’s game over.</p>
+
+            <div className="mt-5 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+              <span className="rounded-md border bg-white px-2 py-1 font-medium shadow-sm">Arrows</span>
+              <span>or</span>
+              <span className="rounded-md border bg-white px-2 py-1 font-medium shadow-sm">W A S D</span>
+              <span>•</span>
+              <span className="rounded-md border bg-white px-2 py-1 font-medium shadow-sm">R</span>
+              <span>restart</span>
+              <span>•</span>
+              <span className="rounded-md border bg-white px-2 py-1 font-medium shadow-sm">Esc</span>
+              <span>exit</span>
+            </div>
+
+            <div className="mt-6 flex items-center gap-3">
               <Button
                 size="lg"
                 className="shadow-brand bg-gradient-to-r from-primary to-fuchsia-500 hover:from-fuchsia-500 hover:to-primary"
@@ -49,6 +64,7 @@ export default function Index() {
               >
                 Start Playing
               </Button>
+              <span className="text-xs text-muted-foreground">or press Enter</span>
             </div>
           </div>
         ) : (
