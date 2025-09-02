@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import GameCanvas, { type GameState } from "@/components/app/GameCanvas";
 import { Button } from "@/components/ui/button";
-import { Heart } from "lucide-react";
+import { Heart, X } from "lucide-react";
 
 export default function Index() {
   const [started, setStarted] = useState(false);
