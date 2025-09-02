@@ -130,8 +130,8 @@ export default function GameCanvas({ onUpdate, className }: GameCanvasProps) {
 
           // Player (Pac-Man)
           p.fill(255, 230, 80);
-          // Slightly more closed and faster: oscillate ~24°���32° at higher speed
-          const mouthAngle = 28 + Math.sin(p.frameCount * 0.2) * 4;
+          // Close further (touch corners): oscillate between 0° and ~12° at faster speed
+          const mouthAngle = Math.max(0, 6 + Math.sin(p.frameCount * 0.24) * 6);
           p.arc(
             player.x + player.w / 2,
             player.y + player.h / 2,
