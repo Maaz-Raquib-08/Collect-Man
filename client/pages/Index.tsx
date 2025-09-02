@@ -43,12 +43,13 @@ export default function Index() {
             <StartBackground />
             <div className="mx-auto grid max-w-xl place-items-center">
               <div
-                className="w-full rounded-3xl border border-cyan-300/60 bg-[linear-gradient(180deg,rgba(59,130,246,0.2),rgba(12,22,56,0.45))] p-8 text-center shadow-[0_0_40px_rgba(34,211,238,0.6)] ring-1 ring-cyan-300/40 backdrop-blur-sm"
+                className="relative w-full overflow-hidden rounded-3xl border border-cyan-300/60 bg-[linear-gradient(180deg,rgba(59,130,246,0.2),rgba(12,22,56,0.45))] p-8 text-center shadow-[0_0_40px_rgba(34,211,238,0.6)] ring-1 ring-cyan-300/40 backdrop-blur-sm"
                 style={{ fontFamily: '"Press Start 2P", monospace' }}
               >
-                <div className="text-cyan-200 drop-shadow-[0_0_12px_rgba(34,211,238,0.9)]">START</div>
-                <div className="mt-3 text-3xl text-cyan-50 drop-shadow-[0_0_14px_rgba(34,211,238,0.8)]">NEW GAME</div>
-                <button className="mt-6 inline-block rounded-md border border-black/20 bg-orange-400 px-5 py-2 text-black shadow-[0_0_16px_rgba(251,146,60,0.9)] hover:bg-orange-300" onClick={() => setStarted(true)}>
+                <PanelStars />
+                <div className="relative text-cyan-200 drop-shadow-[0_0_12px_rgba(34,211,238,0.9)]">START</div>
+                <div className="relative mt-3 text-3xl text-cyan-50 drop-shadow-[0_0_14px_rgba(34,211,238,0.8)]">NEW GAME</div>
+                <button className="relative mt-6 inline-block rounded-md border border-black/20 bg-orange-400 px-5 py-2 text-black shadow-[0_0_16px_rgba(251,146,60,0.9)] hover:bg-orange-300" onClick={() => setStarted(true)}>
                   PLAY
                 </button>
               </div>
