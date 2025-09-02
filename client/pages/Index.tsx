@@ -28,7 +28,7 @@ export default function Index() {
   const livesLeft = Math.max(0, 3 - state.missed);
 
   return (
-    <div className={started ? "relative min-h-screen bg-gradient-to-br from-white to-accent/40" : "relative min-h-screen bg-black"}>
+    <div className={started ? "relative min-h-screen bg-gradient-to-br from-white to-accent/40" : "relative min-h-screen bg-[linear-gradient(180deg,#0b1740_0%,#09122e_100%)]"}>
       {started ? (
         <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="absolute -left-1/3 -top-1/3 h-[600px] w-[600px] rounded-full bg-[radial-gradient(closest-side,theme(colors.primary.DEFAULT)/0.12,transparent)]" />
@@ -42,14 +42,14 @@ export default function Index() {
             <StartBackground />
             <div className="mx-auto grid max-w-xl place-items-center">
               <div
-                className="w-full rounded-3xl border border-cyan-400/40 bg-black/70 p-8 text-center shadow-[0_0_30px_rgba(34,211,238,0.35)] ring-1 ring-cyan-400/30 backdrop-blur"
+                className="w-full rounded-3xl border border-cyan-300/60 bg-[linear-gradient(180deg,rgba(59,130,246,0.2),rgba(12,22,56,0.45))] p-8 text-center shadow-[0_0_40px_rgba(34,211,238,0.6)] ring-1 ring-cyan-300/40 backdrop-blur-sm"
                 style={{ fontFamily: '"Press Start 2P", monospace' }}
               >
-                <div className="text-cyan-300 drop-shadow-[0_0_12px_rgba(34,211,238,0.7)]">START</div>
-                <div className="mt-2 text-2xl text-cyan-200 drop-shadow-[0_0_10px_rgba(34,211,238,0.6)]">NEW GAME</div>
-                <div className="mt-6 inline-block rounded-md bg-pink-500 px-4 py-2 text-black shadow-[0_0_12px_rgba(236,72,153,0.7)]" onClick={() => setStarted(true)}>
+                <div className="text-cyan-200 drop-shadow-[0_0_12px_rgba(34,211,238,0.9)]">START</div>
+                <div className="mt-3 text-3xl text-cyan-50 drop-shadow-[0_0_14px_rgba(34,211,238,0.8)]">NEW GAME</div>
+                <button className="mt-6 inline-block rounded-md border border-black/20 bg-orange-400 px-5 py-2 text-black shadow-[0_0_16px_rgba(251,146,60,0.9)] hover:bg-orange-300" onClick={() => setStarted(true)}>
                   PLAY
-                </div>
+                </button>
               </div>
             </div>
           </>
