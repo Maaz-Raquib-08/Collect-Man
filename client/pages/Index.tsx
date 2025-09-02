@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import GameCanvas, { type GameState } from "@/components/app/GameCanvas";
 import { Button } from "@/components/ui/button";
+import { Heart } from "lucide-react";
 
 export default function Index() {
   const [started, setStarted] = useState(false);
@@ -22,6 +23,8 @@ export default function Index() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [started]);
+
+  const livesLeft = Math.max(0, 3 - state.missed);
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-white to-accent/40">
@@ -46,8 +49,18 @@ export default function Index() {
           </div>
         ) : (
           <div className="flex flex-col items-center gap-4">
-            <div className="flex w-full max-w-3xl items-center justify-between">
-              <div className="text-xs text-muted-foreground">Use arrow keys • Press R to restart • Press Esc to exit</div>
+            <div className="flex w-full max-w-3xl items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="text-xs text-muted-foreground">Use arrow keys • Press R to restart • Press Esc to exit</div>
+                <div className="flex items-center gap-1" aria-label="Lives">
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <Heart
+                      key={i}
+                      className={i < livesLeft ? "h-4 w-4 text-rose-500 fill-rose-500 drop-shadow" : "h-4 w-4 text-muted-foreground/30"}
+                    />
+                  ))}
+                </div>
+              </div>
               <Button variant="secondary" onClick={() => setStarted(false)}>Exit</Button>
             </div>
             <GameCanvas onUpdate={onUpdate} />
