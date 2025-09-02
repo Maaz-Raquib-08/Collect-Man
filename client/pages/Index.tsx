@@ -27,44 +27,26 @@ export default function Index() {
   const livesLeft = Math.max(0, 3 - state.missed);
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-white to-accent/40">
-      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-1/3 -top-1/3 h-[600px] w-[600px] rounded-full bg-[radial-gradient(closest-side,theme(colors.primary.DEFAULT)/0.12,transparent)]" />
-        <div className="absolute -bottom-1/3 -right-1/3 h-[700px] w-[700px] rounded-full bg-[radial-gradient(closest-side,theme(colors.accent.DEFAULT)/0.25,transparent)]" />
-      </div>
+    <div className={started ? "relative min-h-screen bg-gradient-to-br from-white to-accent/40" : "relative min-h-screen bg-black"}>
+      {started ? (
+        <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute -left-1/3 -top-1/3 h-[600px] w-[600px] rounded-full bg-[radial-gradient(closest-side,theme(colors.primary.DEFAULT)/0.12,transparent)]" />
+          <div className="absolute -bottom-1/3 -right-1/3 h-[700px] w-[700px] rounded-full bg-[radial-gradient(closest-side,theme(colors.accent.DEFAULT)/0.25,transparent)]" />
+        </div>
+      ) : null}
 
       <main className="relative mx-auto w-full max-w-5xl px-6 py-20">
         {!started ? (
-          <div className="mx-auto max-w-2xl overflow-hidden rounded-3xl border border-primary/20 bg-white/70 p-8 shadow-brand backdrop-blur supports-[backdrop-filter]:bg-white/60">
-            <div className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-              Space Cleanup: Cosmic Recycler
-            </div>
-            <h1 className="mt-4 text-4xl font-extrabold tracking-tight">
-              <span className="bg-gradient-to-r from-primary to-fuchsia-500 bg-clip-text text-transparent">Start Game</span>
-            </h1>
-            <p className="mt-3 text-sm text-muted-foreground">Collect green resources, avoid red debris. Miss 3 resources and it’s game over.</p>
-
-            <div className="mt-5 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-              <span className="rounded-md border bg-white px-2 py-1 font-medium shadow-sm">Arrows</span>
-              <span>or</span>
-              <span className="rounded-md border bg-white px-2 py-1 font-medium shadow-sm">W A S D</span>
-              <span>•</span>
-              <span className="rounded-md border bg-white px-2 py-1 font-medium shadow-sm">R</span>
-              <span>restart</span>
-              <span>•</span>
-              <span className="rounded-md border bg-white px-2 py-1 font-medium shadow-sm">Esc</span>
-              <span>exit</span>
-            </div>
-
-            <div className="mt-6 flex items-center gap-3">
-              <Button
-                size="lg"
-                className="shadow-brand bg-gradient-to-r from-primary to-fuchsia-500 hover:from-fuchsia-500 hover:to-primary"
-                onClick={() => setStarted(true)}
-              >
-                Start Playing
-              </Button>
-              <span className="text-xs text-muted-foreground">or press Enter</span>
+          <div className="mx-auto grid max-w-xl place-items-center">
+            <div
+              className="w-full rounded-3xl border border-cyan-400/40 bg-black/70 p-8 text-center shadow-[0_0_30px_rgba(34,211,238,0.35)] ring-1 ring-cyan-400/30 backdrop-blur"
+              style={{ fontFamily: '"Press Start 2P", monospace' }}
+            >
+              <div className="text-cyan-300 drop-shadow-[0_0_12px_rgba(34,211,238,0.7)]">START</div>
+              <div className="mt-2 text-2xl text-cyan-200 drop-shadow-[0_0_10px_rgba(34,211,238,0.6)]">NEW GAME</div>
+              <div className="mt-6 inline-block rounded-md bg-pink-500 px-4 py-2 text-black shadow-[0_0_12px_rgba(236,72,153,0.7)]" onClick={() => setStarted(true)}>
+                PLAY
+              </div>
             </div>
           </div>
         ) : (
