@@ -42,24 +42,33 @@ export default function Index() {
             <h1 className="mt-3 text-3xl font-extrabold tracking-tight">Start Game</h1>
             <p className="mt-2 text-sm text-muted-foreground">Arrow keys to move. Collect green resources, avoid red debris. Miss 3 resources and it’s game over. Press R to restart.</p>
             <div className="mt-6">
-              <Button size="lg" className="shadow-brand" onClick={() => setStarted(true)}>
+              <Button
+                size="lg"
+                className="shadow-brand bg-gradient-to-r from-primary to-fuchsia-500 hover:from-fuchsia-500 hover:to-primary"
+                onClick={() => setStarted(true)}
+              >
                 Start Playing
               </Button>
             </div>
           </div>
         ) : (
           <div className="flex flex-col items-center gap-4">
-            <div className="flex w-full max-w-3xl items-center justify-between gap-4">
+            <div className="flex w-full max-w-3xl items-center justify-between gap-4 rounded-xl border border-white/10 bg-white/50 p-2 text-xs backdrop-blur supports-[backdrop-filter]:bg-white/40">
               <div className="flex items-center gap-3">
-                <div className="text-xs text-muted-foreground">Use arrow keys • Press R to restart • Press Esc to exit</div>
-                <div className="flex items-center gap-1" aria-label="Lives">
+                <div className="text-muted-foreground">Use arrow keys • Press R to restart • Press Esc to exit</div>
+                <div className="flex items-center gap-2" aria-label="Lives">
                   {Array.from({ length: 3 }).map((_, i) => (
                     <Heart
                       key={i}
-                      className={i < livesLeft ? "h-4 w-4 text-rose-500 fill-rose-500 drop-shadow" : "h-4 w-4 text-muted-foreground/30"}
+                      className={i < livesLeft ? "h-4 w-4 text-rose-500 fill-rose-500" : "h-4 w-4 text-muted-foreground/30"}
                     />
                   ))}
                 </div>
+              </div>
+              <div className="flex items-center gap-3 text-muted-foreground">
+                <span>Score {state.score}</span>
+                <span>• Level {state.level}</span>
+                <span>• {state.progress}%</span>
               </div>
               <Button variant="secondary" onClick={() => setStarted(false)}>Exit</Button>
             </div>
