@@ -38,18 +38,21 @@ export default function Index() {
 
       <main className="relative mx-auto w-full max-w-5xl px-6 py-20">
         {!started ? (
-          <div className="mx-auto grid max-w-xl place-items-center">
-            <div
-              className="w-full rounded-3xl border border-cyan-400/40 bg-black/70 p-8 text-center shadow-[0_0_30px_rgba(34,211,238,0.35)] ring-1 ring-cyan-400/30 backdrop-blur"
-              style={{ fontFamily: '"Press Start 2P", monospace' }}
-            >
-              <div className="text-cyan-300 drop-shadow-[0_0_12px_rgba(34,211,238,0.7)]">START</div>
-              <div className="mt-2 text-2xl text-cyan-200 drop-shadow-[0_0_10px_rgba(34,211,238,0.6)]">NEW GAME</div>
-              <div className="mt-6 inline-block rounded-md bg-pink-500 px-4 py-2 text-black shadow-[0_0_12px_rgba(236,72,153,0.7)]" onClick={() => setStarted(true)}>
-                PLAY
+          <>
+            <StartBackground />
+            <div className="mx-auto grid max-w-xl place-items-center">
+              <div
+                className="w-full rounded-3xl border border-cyan-400/40 bg-black/70 p-8 text-center shadow-[0_0_30px_rgba(34,211,238,0.35)] ring-1 ring-cyan-400/30 backdrop-blur"
+                style={{ fontFamily: '"Press Start 2P", monospace' }}
+              >
+                <div className="text-cyan-300 drop-shadow-[0_0_12px_rgba(34,211,238,0.7)]">START</div>
+                <div className="mt-2 text-2xl text-cyan-200 drop-shadow-[0_0_10px_rgba(34,211,238,0.6)]">NEW GAME</div>
+                <div className="mt-6 inline-block rounded-md bg-pink-500 px-4 py-2 text-black shadow-[0_0_12px_rgba(236,72,153,0.7)]" onClick={() => setStarted(true)}>
+                  PLAY
+                </div>
               </div>
             </div>
-          </div>
+          </>
         ) : (
           <div className="relative flex flex-col items-center gap-4">
             <div className="pointer-events-none absolute left-1/2 top-2 z-10 w-full max-w-3xl -translate-x-1/2 px-2">
