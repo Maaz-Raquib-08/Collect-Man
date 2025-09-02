@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import GameCanvas, { type GameState } from "@/components/app/GameCanvas";
+import StartBackground from "@/components/app/StartBackground";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 
