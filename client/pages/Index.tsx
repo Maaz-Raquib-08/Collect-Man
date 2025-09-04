@@ -86,10 +86,10 @@ export default function Index() {
                 {(lastCollected !== null || bestCollected !== null) ? (
                   <div className="mt-4 text-sm text-cyan-100">
                     {lastCollected !== null ? (
-                      <div>Last match: collected <span className="font-bold">{lastCollected}</span> resources</div>
+                      <div>Collected: <span className="font-bold">{lastCollected}</span> points</div>
                     ) : null}
                     {bestCollected !== null ? (
-                      <div className="mt-1">Best: <span className="font-bold">{bestCollected}</span> resources</div>
+                      <div className="mt-1">Best: <span className="font-bold">{bestCollected}</span> points</div>
                     ) : null}
                   </div>
                 ) : null}
