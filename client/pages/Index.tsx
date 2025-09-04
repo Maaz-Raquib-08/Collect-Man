@@ -14,8 +14,17 @@ export default function Index() {
     missed: 0,
     gameOver: false,
   });
+  const [lastCollected, setLastCollected] = useState<number | null>(null);
 
   const onUpdate = useCallback((s: GameState) => setState(s), []);
+
+  useEffect(() => {
+    if (state.gameOver) {
+      // capture final collected count and return to start screen
+      setLastCollected(Math.floor(state.score / 10));
+      setStarted(false);
+    }
+  }, [state.gameOver, state.score]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
