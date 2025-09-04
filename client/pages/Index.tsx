@@ -15,14 +15,36 @@ export default function Index() {
     gameOver: false,
   });
   const [lastCollected, setLastCollected] = useState<number | null>(null);
+  const [bestCollected, setBestCollected] = useState<number | null>(null);
 
   const onUpdate = useCallback((s: GameState) => setState(s), []);
+
+  // load best score from localStorage once
+  useEffect(() => {
+    try {
+      const v = localStorage.getItem("best_collected");
+      if (v) setBestCollected(Number(v));
+    } catch (e) {
+      // ignore localStorage errors
+    }
+  }, []);
 
   useEffect(() => {
     if (state.gameOver) {
       // capture final collected count and return to start screen
-      setLastCollected(Math.floor(state.score / 10));
+      const collected = Math.floor(state.score / 10);
+      setLastCollected(collected);
       setStarted(false);
+
+      setBestCollected((prev) => {
+        const next = prev == null ? collected : Math.max(prev, collected);
+        try {
+          localStorage.setItem("best_collected", String(next));
+        } catch (e) {
+          // ignore
+        }
+        return next;
+      });
     }
   }, [state.gameOver, state.score]);
 
@@ -61,8 +83,15 @@ export default function Index() {
                 <button className="relative mt-6 inline-block rounded-md border border-black/20 bg-orange-400 px-5 py-2 text-black shadow-[0_0_16px_rgba(251,146,60,0.9)] hover:bg-orange-300" onClick={() => setStarted(true)}>
                   PLAY
                 </button>
-                {lastCollected !== null ? (
-                  <div className="mt-4 text-sm text-cyan-100">Last run: collected <span className="font-bold">{lastCollected}</span> resources</div>
+                {(lastCollected !== null || bestCollected !== null) ? (
+                  <div className="mt-4 text-sm text-cyan-100">
+                    {lastCollected !== null ? (
+                      <div>Last match: collected <span className="font-bold">{lastCollected}</span> resources</div>
+                    ) : null}
+                    {bestCollected !== null ? (
+                      <div className="mt-1">Best: <span className="font-bold">{bestCollected}</span> resources</div>
+                    ) : null}
+                  </div>
                 ) : null}
               </div>
             </div>
