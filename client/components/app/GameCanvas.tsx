@@ -159,6 +159,7 @@ export default function GameCanvas({ onUpdate, className }: GameCanvasProps) {
             p.rect(d.x, d.y, d.w, d.h, 6);
             if (collides(player, d)) {
               gameOver = true;
+              emit();
             }
             if (d.x < -d.w) debris.splice(i, 1);
           }
